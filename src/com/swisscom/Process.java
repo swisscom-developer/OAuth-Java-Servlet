@@ -124,9 +124,40 @@ public class Process extends HttpServlet {
 					httpresponse.getEntity().getContent()));	
 			logger.info(httpresponse.getStatusLine().getStatusCode());
 			String line = "";
-			while ((line = rd.readLine()) != null) {
+			String accesstoken = "";
+			for(int i=0;i<6;i++){
+				line=rd.readLine();
 				logger.info(line);
+				if(i==1){
+					//Get the access token
+					String[] index = line.split(":");
+					accesstoken = index[1];
+					accesstoken = accesstoken.substring(2,accesstoken.length()-2);
+//					logger.info(at);
+				}
 			}
+			
+			
+			//Call the Login API - to show how to use the Acces Token
+			if(httpresponse.getStatusLine().getStatusCode()==200){
+				String loginURL = "https://api.swisscom.com/v1/users/~/login";
+				HttpClient defaultClient = new DefaultHttpClient();
+				HttpGet loginRequest  = new HttpGet(loginURL);
+				loginRequest.setHeader("Authorization","Bearer "+ accesstoken);
+				HttpResponse loginhttpresponse = client.execute(loginRequest);
+		       
+				
+				// Get the response
+				BufferedReader loginrd = new BufferedReader(new InputStreamReader(
+						loginhttpresponse.getEntity().getContent()));	
+				logger.info(loginhttpresponse.getStatusLine().getStatusCode());
+				String loginline = "";
+
+				while ((loginline = loginrd.readLine()) != null) {
+					logger.info(loginline);
+				}
+			}
+		
 		}
 	}
 
