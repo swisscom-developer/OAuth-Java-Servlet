@@ -133,7 +133,7 @@ public class Process extends HttpServlet {
 					String[] index = line.split(":");
 					accesstoken = index[1];
 					accesstoken = accesstoken.substring(2,accesstoken.length()-2);
-//					logger.info(at);
+//					logger.info(accestoken);
 				}
 			}
 			
